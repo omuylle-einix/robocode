@@ -6,111 +6,129 @@ import robocode.HitRobotEvent;
 import robocode.Robot;
 import robocode.WinEvent;
 import static robocode.util.Utils.normalRelativeAngleDegrees;
- 
+
 // API help : http://robocode.sourceforge.net/docs/robocode/robocode/Robot.html
- 
+
 /**
  * MyFirstRobot - a robot by (your name here)
  */
 public class MyFirstRobot extends Robot
 {
-        /**
-         * run: MyFirstRobot's default behavior
-         */
- 
-       
-        public void run()
-        {
-               
-                setBodyColor(Color.red);
-                setGunColor(Color.yellow);
-                setRadarColor(Color.blue);
-                setScanColor(Color.blue);
-                setBulletColor(Color.red);     
-               
-                double largeur = getBattleFieldWidth();
-                double longueur = getBattleFieldHeight();
-                double mlargeur = (getBattleFieldWidth()/2);
-                       
-                if ( getHeading() <= 180 && getHeading() > 0)  
-                {
-                       
-                                turnLeft(getHeading());
-                }
-                else if ( getHeading() > 180 && getHeading() < 360)
-                {
-               
-                                turnRight(360 - getHeading());
-               
-                }
-                       
-                ahead(longueur);
-               
-                if (getX() > mlargeur )
-                {
-                        turnLeft(90);
-                }
-               
-                else
-                {
-                        turnRight(90);
-                }
-               
-                while (getX() != mlargeur)
-                {
-                        ahead(Math.abs(mlargeur - getX()));
-                }
-               
-                if (getHeading() == 270)
-                {
-                        turnRight(180);
-                }
-               
-                turnRight(45);
- 
-                while(true)
-                {
-                        // Replace the next 4 lines with any behavior you would like
-                        ahead(800);
-                       
-                }
-        }
- 
- 
- 
-        /**
-         * onScannedRobot: What to do when you see another robot
-         */
-        public void onScannedRobot(ScannedRobotEvent e) {
-                // Replace the next line with any behavior you would like
-               
-                if (e.getDistance() < 150)
-                {
-                        fire(3);
-                }
-                else if (e.getDistance() > 149 && e.getDistance() < 300)
-                {
-                        fire(2);
-                }
-                else
-                {
-                        fire(1);
-                }
-        }
- 
-        /**
-         * onHitByBullet: What to do when you're hit by a bullet
-         */
-        public void onHitByBullet(HitByBulletEvent e) {
-                // Replace the next line with any behavior you would like
-                doNothing();
-        }
-       
-        /**
-         * onHitWall: What to do when you hit a wall
-         */
-        public void onHitWall(HitWallEvent e) {
-                // Replace the next line with any behavior you would like
-                back(50);
-        }      
+	/**
+	 * run: MyFirstRobot's default behavior
+	 */
+
+	
+	public void run() 
+	{
+		
+		setBodyColor(Color.red);
+		setGunColor(Color.yellow);
+		setRadarColor(Color.blue);
+		setScanColor(Color.blue);
+		setBulletColor(Color.red);	
+		
+		double width = getBattleFieldWidth();
+		double height = getBattleFieldHeight();
+	
+		double mwidth = (getBattleFieldWidth()/2);
+		double mheight = (getBattleFieldHeight()/2);
+	
+		double pwidth = (mwidth - getWidth()/2);
+		double pheight = (mheight - getHeight()/2);
+		
+		double	twidth = (mwidth - getWidth());
+		double  theight = (mheight - getHeight());
+		
+		double angle1 = (180 - 2*(Math.toDegrees(Math.atan(pheight/pwidth))));
+		double angle2 = (180 - 2*(Math.toDegrees(Math.atan(pwidth/pheight))));
+		
+		double pyth = Math.sqrt(Math.pow(mwidth, 2) + Math.pow(mheight, 2));
+	
+		
+		if ( getHeading() <= 180 && getHeading() > 0)	
+		{
+			
+				turnLeft(getHeading());
+		}
+		else if ( getHeading() > 180 && getHeading() < 360)
+		{
+		
+				turnRight(360 - getHeading());
+		
+		}
+			
+		ahead(2*pheight - getY());
+		
+		if (getX() > mwidth )
+		{
+			turnLeft(90);
+		}
+		
+		else 
+		{
+			turnRight(90);
+		}
+		
+		while (getX() != mwidth)
+		{
+			ahead(Math.abs(mwidth - getX()));
+		}
+	
+		if (getHeading() == 270)
+		{
+			turnRight(180);
+		}
+		
+		System.out.println(pyth);
+		turnRight(90 - Math.toDegrees(Math.atan(pwidth/pheight)));
+	
+		while(true) 
+		{
+			// Replace the next 4 lines with any behavior you would like
+			ahead(pyth);
+			turnRight(360 + angle1);
+			ahead(pyth);
+			turnRight(360 + angle2);
+			
+		}
+	}
+
+
+
+	/**
+	 * onScannedRobot: What to do when you see another robot
+	 */
+	public void onScannedRobot(ScannedRobotEvent e) {
+		// Replace the next line with any behavior you would like
+		
+		if (e.getDistance() < 150)
+		{
+			fire(3);
+		}
+		else if (e.getDistance() > 149 && e.getDistance() < 300)
+		{
+			fire(2);
+		}
+		else 
+		{
+			fire(1);
+		}
+	}
+
+	/**
+	 * onHitByBullet: What to do when you're hit by a bullet
+	 */
+	public void onHitByBullet(HitByBulletEvent e) {
+		// Replace the next line with any behavior you would like
+		doNothing();
+	}
+	
+	/**
+	 * onHitWall: What to do when you hit a wall
+	 */
+	public void onHitWall(HitWallEvent e) {
+		// Replace the next line with any behavior you would like
+		doNothing();
+	}	
 }
